@@ -1,16 +1,16 @@
-import React, { React, useState } from 'react';
+import React from 'react';
 import Section from '../Section/Section';
 import Statistics from '../Statistics/Statistics';
 import FeedbackOptions from '../FeedbackOptions/FeedbackOptions';
 import Notification from '../Notification/Notification';
 import Appcss from './app.module.css'
 
-function App () {
-  const [state, setState] = useState({
+export class App extends React.Component {
+  state = {
     good: 0,
     neutral: 0,
     bad: 0,
-  });
+  };
 
   handleFeedback = (type) => {
     this.setState((prevState) => ({
@@ -27,7 +27,7 @@ function App () {
     return total === 0 ? 0 : (this.state.good / total) * 100;
   };
 
-  render() 
+  render() {
     const totalFeedback = this.countTotalFeedback();
     const positivePercentage = this.countPositiveFeedbackPercentage();
     const  options = ['good', 'neutral', 'bad'];
@@ -53,7 +53,7 @@ function App () {
         </Section>
       </div>
     );
-};
-
+  }
+}
 
 export default App;
