@@ -1,49 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Section from '../Section/Section';
 import Statistics from '../Statistics/Statistics';
 import FeedbackOptions from '../FeedbackOptions/FeedbackOptions';
 import Notification from '../Notification/Notification';
 import Appcss from './app.module.css'
 
-export class App extends React.Component {
-  state = {
+function App () {
+  const [state, setState] = useState ({
     good: 0,
     neutral: 0,
     bad: 0,
-  };
+  });
 
-  handleFeedback = (type) => {
-    this.setState((prevState) => ({
+  const handleFeedback = (type) => {
+    setState((prevState) => ({
+      ...prevState,
       [type]: prevState[type] + 1,
     }));
   };
 
-  countTotalFeedback = () => {
-    return this.state.good + this.state.neutral + this.state.bad;
-  };
-
-  countPositiveFeedbackPercentage = () => {
-    const total = this.countTotalFeedback();
-    return total === 0 ? 0 : (this.state.good / total) * 100;
-  };
-
-  render() {
-    const totalFeedback = this.countTotalFeedback();
-    const positivePercentage = this.countPositiveFeedbackPercentage();
+    const totalFeedback = state.good + state.neutral + state.bad;
+    const positivePercentage = totalFeedback === 0 ? 0 : (state.good / totalFeedback) * 100;
     const  options = ['good', 'neutral', 'bad'];
 
     return (
       <div className={Appcss.container}>
         <Section title=" Please leave feedback">
-          <FeedbackOptions options={options} onLeaveFeedback={this.handleFeedback}/>
+          <FeedbackOptions options={options} onLeaveFeedback={handleFeedback}/>
         </Section>
 
         <Section title="Statistics">
           {totalFeedback > 0 ? (
             <Statistics
-              good={this.state.good}
-              neutral={this.state.neutral}
-              bad={this.state.bad}
+              good={state.good}
+              neutral={state.neutral}
+              bad={state.bad}
               total={totalFeedback}
               positivePercentage={positivePercentage.toFixed(2)}
             />
@@ -54,6 +45,6 @@ export class App extends React.Component {
       </div>
     );
   }
-}
+
 
 export default App;
